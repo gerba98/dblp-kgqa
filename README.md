@@ -17,7 +17,7 @@ I built an end-to-end Knowledge Graph Question Answering (KGQA) system over the 
 
 - Docker
 - A Google API key (the free tier is sufficient). You can get one at https://aistudio.google.com/apikey (Google Cloud Vertex AI is also supported).
-- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) — only required on the host if you use Qwen as the LLM backend (`make llm-cpu` / `llm-gpu` / `runpod-*`).
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) — only required on the host if you use Qwen as the LLM backend.
 
 ## How to run the demo
 
