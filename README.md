@@ -22,6 +22,8 @@ I built an end-to-end Knowledge Graph Question Answering (KGQA) system over the 
 
 The demo runs the KGQA pipeline step-by-step on any natural language question. It executes the generated queries against the live [DBLP SPARQL endpoint](https://sparql.dblp.org/) and uses the [DBLP search APIs](https://dblp.org/faq/13501473.html) for entity linking.
 
+https://github.com/user-attachments/assets/1c6f7063-0c07-4cd7-9023-1a2db50e7610
+
 ### 1. Create `.env` from the template
 
 ```bash
