@@ -17,6 +17,7 @@ I built an end-to-end Knowledge Graph Question Answering (KGQA) system over the 
 
 - Docker
 - A Google API key (the free tier is sufficient). You can get one at https://aistudio.google.com/apikey (Google Cloud Vertex AI is also supported).
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) — only required on the host if you use Qwen as the LLM backend (`make llm-cpu` / `llm-gpu` / `runpod-*`).
 
 ## How to run the demo
 
@@ -83,7 +84,7 @@ This setup uses `Qwen3.5-4B-UD-Q4_K_XL` for the LLM, which you can run either on
 
 **Option A: Local llama-server (your own GPU or CPU)**
 
-It needs about **5 GB of VRAM** for full GPU offload; CPU mode works without a GPU but is much slower. Requires `uv` on your host (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
+It needs about **5 GB of VRAM** for full GPU offload; CPU mode works without a GPU but is much slower.
 
 1. Start the server:
 
@@ -95,7 +96,7 @@ It needs about **5 GB of VRAM** for full GPU offload; CPU mode works without a G
 
    *(The first start downloads the model from Hugging Face into a Docker volume. Later starts reuse the cache.)*
 
-2. If your GPU does not have enough VRAM for the full model, set `LLAMA_N_GPU_LAYERS` in `.env` to a smaller integer (for example `30`). The remaining layers run on CPU.
+2. If your GPU does not have enough VRAM for the full model, set `local_llm.backend.n_gpu_layers` in `config/services.yml` to a smaller integer (for example `30`). The remaining layers run on CPU.
 
 3. Open `config/demo.yml` and replace every `llm_service_name: google_llm` with `llm_service_name: local_llm`.
 4. Open `config/services.yml` and set `local_llm.backend.base_url` to `http://llama-server:8080`.

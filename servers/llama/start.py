@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["pyyaml", "python-dotenv"]
+# dependencies = ["pyyaml"]
 # ///
 import os
 import subprocess
@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 
 import yaml
-from dotenv import load_dotenv
 
 HF_REPO_TEMPLATE = "unsloth/Qwen3.5-{size}-GGUF"
 HF_SIZES = ("2B", "4B", "9B")
@@ -30,15 +29,10 @@ def main() -> None:
     if profile not in ("cpu", "gpu"):
         sys.exit("Usage: start.py {cpu|gpu}")
 
-    load_dotenv(PROJECT_ROOT / ".env")
-
     backend = yaml.safe_load(SERVICES_YML.read_text())["local_llm"]["backend"]
     model = backend["model_name"]
     ctx_size = backend["ctx_size"]
-
-    n_gpu_layers = os.environ.get("LLAMA_N_GPU_LAYERS")
-    if not n_gpu_layers:
-        n_gpu_layers = "99" if profile == "gpu" else "0"
+    n_gpu_layers = backend["n_gpu_layers"] if profile == "gpu" else 0
 
     print(
         f"Starting llama-server-{profile}: "
@@ -50,7 +44,7 @@ def main() -> None:
         "LLAMA_HF_REPO": hf_repo_for(model),
         "LLAMA_HF_FILE": f"{model}.gguf",
         "LLAMA_CTX_SIZE": str(ctx_size),
-        "LLAMA_N_GPU_LAYERS": n_gpu_layers,
+        "LLAMA_N_GPU_LAYERS": str(n_gpu_layers),
     }
     subprocess.run(
         ["docker", "compose", "-f", str(COMPOSE_FILE),

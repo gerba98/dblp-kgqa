@@ -14,9 +14,9 @@ services:
     command:
       - >
         /app/llama-server
-        --hf-repo $${LLAMA_HF_REPO} --hf-file $${LLAMA_HF_FILE}
+        --hf-repo ${LLAMA_HF_REPO} --hf-file ${LLAMA_HF_FILE}
         --host 0.0.0.0 --port 8080
-        --ctx-size $${LLAMA_CTX_SIZE}
+        --ctx-size ${LLAMA_CTX_SIZE}
         --n-gpu-layers 0
         --cache-type-k bf16 --cache-type-v bf16
     restart: unless-stopped
@@ -41,10 +41,10 @@ services:
     command:
       - >
         /app/llama-server
-        --hf-repo $${LLAMA_HF_REPO} --hf-file $${LLAMA_HF_FILE}
+        --hf-repo ${LLAMA_HF_REPO} --hf-file ${LLAMA_HF_FILE}
         --host 0.0.0.0 --port 8080
-        --ctx-size $${LLAMA_CTX_SIZE}
-        --n-gpu-layers $${LLAMA_N_GPU_LAYERS:-99}
+        --ctx-size ${LLAMA_CTX_SIZE}
+        --n-gpu-layers ${LLAMA_N_GPU_LAYERS}
         --cache-type-k bf16 --cache-type-v bf16
     restart: unless-stopped
 volumes:

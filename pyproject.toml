@@ -17,7 +17,6 @@ dependencies = [
     "rich>=14.3.3",
     "sparqlwrapper>=2.0.0",
     "gdown>=5.0.0",
-    "runpod>=1.9.0",
     "requests>=2.32",
     "streamlit>=1.57.0",
     "streamlit-ace>=0.1.1",

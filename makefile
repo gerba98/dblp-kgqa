@@ -48,19 +48,19 @@ llm-down: ## Stop local llama-server (cpu + gpu profiles)
 
 .PHONY: runpod-start
 runpod-start: ## Start RunPod llama-server (reads model/ctx from services.yml)
-	$(call app_run, python servers/runpod/runpod_llm.py start)
+	uv run servers/runpod/runpod_llm.py start
 
 .PHONY: runpod-stop
 runpod-stop: ## Stop RunPod pod
-	$(call app_run, python servers/runpod/runpod_llm.py stop)
+	uv run servers/runpod/runpod_llm.py stop
 
 .PHONY: runpod-status
 runpod-status: ## Check RunPod pod status and health
-	$(call app_run, python servers/runpod/runpod_llm.py status)
+	uv run servers/runpod/runpod_llm.py status
 
 .PHONY: runpod-url
 runpod-url: ## Print RunPod base_url for services.yml
-	$(call app_run, python servers/runpod/runpod_llm.py url)
+	uv run servers/runpod/runpod_llm.py url
 
 .PHONY: gcloud-auth
 gcloud-auth: ## Run ADC login + set quota project from .env (gcloud is baked into the image)

@@ -17,7 +17,6 @@ services:
     volumes:
       - ./data:/app/data
       - ./config:/app/config
-      - ./servers/runpod:/app/servers/runpod:ro
   neo4j:
     image: neo4j:5.26
     user: "${USER_UID:-1000}:${USER_GID:-1000}"

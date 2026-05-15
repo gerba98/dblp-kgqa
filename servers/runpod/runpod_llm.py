@@ -1,3 +1,7 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["runpod>=1.9.0", "pyyaml", "python-dotenv"]
+# ///
 import os
 import sys
 from pathlib import Path
@@ -19,7 +23,6 @@ HF_REPO_TEMPLATE = "unsloth/Qwen3.5-{size}-GGUF"
 HF_SIZES = ("2B", "4B", "9B")
 
 # llama-server
-N_GPU_LAYERS = 99
 CACHE_TYPE = "bf16"
 
 # Paths
@@ -28,7 +31,7 @@ SERVICES_YML = PROJECT_ROOT / "config" / "services.yml"
 POD_ID_FILE = PROJECT_ROOT / ".runpod" / "pod_id"
 
 
-def llama_args(model, ctx_size):
+def llama_args(model, ctx_size, n_gpu_layers):
     size = next((s for s in HF_SIZES if f"-{s}-" in model), None)
     if size is None:
         sys.exit(f"Cannot determine model size from: {model}")
@@ -36,7 +39,7 @@ def llama_args(model, ctx_size):
     return (
         f"--hf-repo {repo} --hf-file {model}.gguf "
         f"--host 0.0.0.0 --port {HTTP_PORT} --ctx-size {ctx_size} "
-        f"--n-gpu-layers {N_GPU_LAYERS} "
+        f"--n-gpu-layers {n_gpu_layers} "
         f"--cache-type-k {CACHE_TYPE} --cache-type-v {CACHE_TYPE}"
     )
 
@@ -47,11 +50,14 @@ def pod_url(pod_id):
 
 def cmd_start():
     if POD_ID_FILE.exists():
-        sys.exit(f"Pod already active: {POD_ID_FILE.read_text().strip()}")
+        print(f"Pod already active: {POD_ID_FILE.read_text().strip()}")
+        return
 
     backend = yaml.safe_load(SERVICES_YML.read_text())["local_llm"]["backend"]
-    model, ctx_size = backend["model_name"], backend["ctx_size"]
-    print(f"Creating pod: model={model} ctx={ctx_size} gpu={GPU}")
+    model = backend["model_name"]
+    ctx_size = backend["ctx_size"]
+    n_gpu_layers = backend["n_gpu_layers"]
+    print(f"Creating pod: model={model} ctx={ctx_size} n_gpu_layers={n_gpu_layers} gpu={GPU}")
 
     pod = runpod.create_pod(
         name=f"llama-{model}",
@@ -60,7 +66,7 @@ def cmd_start():
         cloud_type=CLOUD_TYPE,
         container_disk_in_gb=CONTAINER_DISK_GB,
         ports=f"{HTTP_PORT}/http",
-        docker_args=llama_args(model, ctx_size),
+        docker_args=llama_args(model, ctx_size, n_gpu_layers),
         allowed_cuda_versions=ALLOWED_CUDA,
         country_code="FR,CZ,NL,RO"
     )
@@ -82,7 +88,8 @@ def cmd_stop():
 
 def cmd_status():
     if not POD_ID_FILE.exists():
-        sys.exit("No active pod.")
+        print("No active pod.")
+        return
     pod = runpod.get_pod(POD_ID_FILE.read_text().strip())
     print(yaml.safe_dump({
         "id": pod["id"],
@@ -95,7 +102,8 @@ def cmd_status():
 
 def cmd_url():
     if not POD_ID_FILE.exists():
-        sys.exit("No active pod.")
+        print("No active pod.")
+        return
     print(pod_url(POD_ID_FILE.read_text().strip()))
 
 

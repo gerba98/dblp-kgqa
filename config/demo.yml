@@ -11,7 +11,7 @@ pipeline_config:
     strategy: RagRelationLinker
     neo4j_service_name: local_neo4j
     embedding_service_name: google_embedding_rq
-    num_properties: 5
+    num_properties: 10
     schema_version: current
     include_domain_range: false
   query_generator_config:
