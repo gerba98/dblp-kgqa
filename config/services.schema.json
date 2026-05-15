@@ -1,0 +1,300 @@
+{
+  "$defs": {
+    "DblpQuadServiceConfig": {
+      "properties": {
+        "type": {
+          "const": "DblpQuad",
+          "default": "DblpQuad",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "DblpQuadServiceConfig",
+      "type": "object"
+    },
+    "EmbeddingServiceConfig": {
+      "properties": {
+        "type": {
+          "const": "Embedding",
+          "default": "Embedding",
+          "title": "Type",
+          "type": "string"
+        },
+        "model_name": {
+          "const": "gemini-embedding-001",
+          "default": "gemini-embedding-001",
+          "title": "Model Name",
+          "type": "string"
+        },
+        "task_type": {
+          "default": "SEMANTIC_SIMILARITY",
+          "enum": [
+            "RETRIEVAL_QUERY",
+            "RETRIEVAL_DOCUMENT",
+            "SEMANTIC_SIMILARITY",
+            "CLASSIFICATION",
+            "CLUSTERING",
+            "QUESTION_ANSWERING",
+            "FACT_VERIFICATION",
+            "CODE_RETRIEVAL_QUERY"
+          ],
+          "title": "Task Type",
+          "type": "string"
+        },
+        "use_vertexai": {
+          "default": false,
+          "title": "Use Vertexai",
+          "type": "boolean"
+        }
+      },
+      "title": "EmbeddingServiceConfig",
+      "type": "object"
+    },
+    "GoogleBackendConfig": {
+      "properties": {
+        "strategy": {
+          "const": "Google",
+          "default": "Google",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "model_name": {
+          "default": "gemini-3.1-flash-lite-preview",
+          "enum": [
+            "gemini-3-flash-preview",
+            "gemini-3.1-flash-lite-preview"
+          ],
+          "title": "Model Name",
+          "type": "string"
+        },
+        "thinking_level": {
+          "default": "minimal",
+          "enum": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Thinking Level",
+          "type": "string"
+        },
+        "use_vertexai": {
+          "default": false,
+          "title": "Use Vertexai",
+          "type": "boolean"
+        }
+      },
+      "title": "GoogleBackendConfig",
+      "type": "object"
+    },
+    "LLMServiceConfig": {
+      "properties": {
+        "type": {
+          "const": "LLM",
+          "default": "LLM",
+          "title": "Type",
+          "type": "string"
+        },
+        "temperature": {
+          "default": 0.0,
+          "title": "Temperature",
+          "type": "number"
+        },
+        "max_retries": {
+          "default": 3,
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "max_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 2048,
+          "title": "Max Tokens"
+        },
+        "backend": {
+          "discriminator": {
+            "mapping": {
+              "Google": "#/$defs/GoogleBackendConfig",
+              "LlamaCpp": "#/$defs/LlamaCppBackendConfig"
+            },
+            "propertyName": "strategy"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/GoogleBackendConfig"
+            },
+            {
+              "$ref": "#/$defs/LlamaCppBackendConfig"
+            }
+          ],
+          "title": "Backend"
+        }
+      },
+      "required": [
+        "backend"
+      ],
+      "title": "LLMServiceConfig",
+      "type": "object"
+    },
+    "LlamaCppBackendConfig": {
+      "properties": {
+        "strategy": {
+          "const": "LlamaCpp",
+          "default": "LlamaCpp",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "model_name": {
+          "default": "Qwen3.5-4B-UD-Q4_K_XL",
+          "enum": [
+            "Qwen3.5-4B-UD-Q4_K_XL",
+            "Qwen3.5-2B-UD-Q5_K_XL"
+          ],
+          "title": "Model Name",
+          "type": "string"
+        },
+        "base_url": {
+          "default": "http://llama-server:8080",
+          "title": "Base Url",
+          "type": "string"
+        },
+        "ctx_size": {
+          "default": 16384,
+          "title": "Ctx Size",
+          "type": "integer"
+        },
+        "n_gpu_layers": {
+          "default": 99,
+          "title": "N Gpu Layers",
+          "type": "integer"
+        },
+        "top_p": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 0.8,
+          "title": "Top P"
+        },
+        "top_k": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 20,
+          "title": "Top K"
+        },
+        "min_p": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 0.0,
+          "title": "Min P"
+        },
+        "presence_penalty": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 1.5,
+          "title": "Presence Penalty"
+        },
+        "enable_thinking": {
+          "default": false,
+          "title": "Enable Thinking",
+          "type": "boolean"
+        }
+      },
+      "title": "LlamaCppBackendConfig",
+      "type": "object"
+    },
+    "Neo4jServiceConfig": {
+      "properties": {
+        "type": {
+          "const": "Neo4j",
+          "default": "Neo4j",
+          "title": "Type",
+          "type": "string"
+        },
+        "uri": {
+          "default": "bolt://neo4j:7687",
+          "title": "Uri",
+          "type": "string"
+        }
+      },
+      "title": "Neo4jServiceConfig",
+      "type": "object"
+    },
+    "ServiceConfig": {
+      "discriminator": {
+        "mapping": {
+          "DblpQuad": "#/$defs/DblpQuadServiceConfig",
+          "Embedding": "#/$defs/EmbeddingServiceConfig",
+          "LLM": "#/$defs/LLMServiceConfig",
+          "Neo4j": "#/$defs/Neo4jServiceConfig"
+        },
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LLMServiceConfig"
+        },
+        {
+          "$ref": "#/$defs/Neo4jServiceConfig"
+        },
+        {
+          "$ref": "#/$defs/DblpQuadServiceConfig"
+        },
+        {
+          "$ref": "#/$defs/EmbeddingServiceConfig"
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "properties": {
+    "google_llm": {
+      "$ref": "#/$defs/ServiceConfig"
+    },
+    "local_llm": {
+      "$ref": "#/$defs/ServiceConfig"
+    },
+    "local_neo4j": {
+      "$ref": "#/$defs/ServiceConfig"
+    },
+    "dblp_quad": {
+      "$ref": "#/$defs/ServiceConfig"
+    },
+    "google_embedding_ss": {
+      "$ref": "#/$defs/ServiceConfig"
+    },
+    "google_embedding_rq": {
+      "$ref": "#/$defs/ServiceConfig"
+    }
+  },
+  "title": "ServiceRegistryConfig",
+  "type": "object"
+}

@@ -1,0 +1,44 @@
+name: dblp-dump
+services:
+  virtuoso:
+    image: openlink/virtuoso-opensource-7:latest
+    environment:
+      - DBA_PASSWORD=admin
+      - SPARQL_UPDATE=true
+      # --- QUERY SERVING CONFIGURATION ---
+      # 85.000 buffers * 8KB = about 680 MB for buffer pool
+      - VIRT_Parameters_NumberOfBuffers=85000
+      - VIRT_Parameters_MaxDirtyBuffers=65000
+      - VIRT_Parameters_DirsAllowed=., ../vad, /usr/share/proj, /database/import, /import
+      # Checkpoint every 10 minutes
+      - VIRT_Parameters_CheckpointInterval=10
+      - VIRT_Parameters_CheckpointSync=2
+      # Query limits
+      - VIRT_SPARQL_MaxQueryExecutionTime=15
+      - VIRT_SPARQL_ResultSetMaxRows=10000
+    ports:
+      - "8890:8890" # SPARQL Endpoint
+      - "1111:1111" # ISQL Connection
+    volumes:
+      # loaded data
+      - virtuoso-data:/database
+      # DBLP dump
+      - ${LOCAL_WORKSPACE_FOLDER:-../..}/servers/virtuoso/dump:/import:ro
+    networks:
+      - masters-thesis_default
+    # --- DOCKER HARDWARE LIMITS ---
+    # memswap_limit = mem_limit disables swap (memory freed immediately on shutdown)
+    mem_limit: 12000m
+    memswap_limit: 16000m
+    mem_reservation: 4000m
+    deploy:
+      resources:
+        limits:
+          memory: 12000M
+        reservations:
+          memory: 4000M
+volumes:
+  virtuoso-data: {}
+networks:
+  masters-thesis_default:
+    external: true

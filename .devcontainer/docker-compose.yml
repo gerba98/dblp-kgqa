@@ -1,0 +1,12 @@
+name: masters-thesis
+# Dev overrides merged on top of ../docker-compose.yml
+services:
+  app:
+    image: masters-thesis/app:dev
+    build:
+      target: dev
+    volumes:
+      - .:/app:cached
+      - app-venv:/app/.venv
+volumes:
+  app-venv: {}

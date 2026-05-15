@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=demo.schema.json
+pipeline_config:
+  info_extractor_config:
+    strategy: LLMInfoExtractor
+    llm_service_name: google_llm
+  entity_linker_config:
+    strategy: ApiEntityLinker
+    api_host: https://dblp.org
+    difflib_cutoff: 0.3
+  relation_linker_config:
+    strategy: RagRelationLinker
+    neo4j_service_name: local_neo4j
+    embedding_service_name: google_embedding_rq
+    num_properties: 5
+    schema_version: current
+    include_domain_range: false
+  query_generator_config:
+    strategy: LLMRAGQueryGenerator
+    llm_service_name: google_llm
+    schema_version: current
+    include_static_few_shot: false
+    include_explanation: true
+    format_yaml: false
+    embedding_service_name: google_embedding_ss
+    neo4j_service_name: local_neo4j
+    num_dynamic_few_shot: 15
+    filter_by_query_type: true
+  query_executor_config:
+    strategy: EndpointQueryExecutor
+    endpoint: https://sparql.dblp.org/sparql
+    timeout: 20

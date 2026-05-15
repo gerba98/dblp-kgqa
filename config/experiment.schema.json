@@ -1,0 +1,470 @@
+{
+  "$defs": {
+    "ApiEntityLinkerConfig": {
+      "properties": {
+        "strategy": {
+          "const": "ApiEntityLinker",
+          "default": "ApiEntityLinker",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "api_host": {
+          "default": "https://dblp.org",
+          "title": "Api Host",
+          "type": "string"
+        },
+        "difflib_cutoff": {
+          "default": 0.3,
+          "title": "Difflib Cutoff",
+          "type": "number"
+        }
+      },
+      "title": "ApiEntityLinkerConfig",
+      "type": "object"
+    },
+    "EndpointQueryExecutorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "EndpointQueryExecutor",
+          "default": "EndpointQueryExecutor",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "endpoint": {
+          "default": "https://sparql.dblp.org/sparql",
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "timeout": {
+          "default": 20,
+          "title": "Timeout",
+          "type": "integer"
+        },
+        "local_docker": {
+          "default": false,
+          "title": "Local Docker",
+          "type": "boolean"
+        },
+        "docker_container_name": {
+          "default": "dblp-dump-virtuoso-1",
+          "title": "Docker Container Name",
+          "type": "string"
+        },
+        "docker_ready_timeout": {
+          "default": 60,
+          "title": "Docker Ready Timeout",
+          "type": "integer"
+        }
+      },
+      "title": "EndpointQueryExecutorConfig",
+      "type": "object"
+    },
+    "EntityLinkerConfig": {
+      "discriminator": {
+        "mapping": {
+          "ApiEntityLinker": "#/$defs/ApiEntityLinkerConfig",
+          "GoldEntityLinker": "#/$defs/GoldEntityLinkerConfig",
+          "MockEntityLinker": "#/$defs/MockEntityLinkerConfig"
+        },
+        "propertyName": "strategy"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MockEntityLinkerConfig"
+        },
+        {
+          "$ref": "#/$defs/ApiEntityLinkerConfig"
+        },
+        {
+          "$ref": "#/$defs/GoldEntityLinkerConfig"
+        }
+      ]
+    },
+    "FullSchemaRelationLinkerConfig": {
+      "properties": {
+        "strategy": {
+          "const": "FullSchemaRelationLinker",
+          "default": "FullSchemaRelationLinker",
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "FullSchemaRelationLinkerConfig",
+      "type": "object"
+    },
+    "GoldEntityLinkerConfig": {
+      "properties": {
+        "strategy": {
+          "const": "GoldEntityLinker",
+          "default": "GoldEntityLinker",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "dblp_quad_service_name": {
+          "default": "dblp_quad",
+          "title": "Dblp Quad Service Name",
+          "type": "string"
+        },
+        "dblp_quad_split_type": {
+          "default": "test",
+          "enum": [
+            "train",
+            "valid",
+            "test"
+          ],
+          "title": "Dblp Quad Split Type",
+          "type": "string"
+        }
+      },
+      "title": "GoldEntityLinkerConfig",
+      "type": "object"
+    },
+    "GoldInfoExtractorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "GoldInfoExtractor",
+          "default": "GoldInfoExtractor",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "dblp_quad_service_name": {
+          "default": "dblp_quad",
+          "title": "Dblp Quad Service Name",
+          "type": "string"
+        },
+        "dblp_quad_split_type": {
+          "default": "test",
+          "enum": [
+            "train",
+            "valid",
+            "test"
+          ],
+          "title": "Dblp Quad Split Type",
+          "type": "string"
+        }
+      },
+      "title": "GoldInfoExtractorConfig",
+      "type": "object"
+    },
+    "InfoExtractorConfig": {
+      "discriminator": {
+        "mapping": {
+          "GoldInfoExtractor": "#/$defs/GoldInfoExtractorConfig",
+          "LLMInfoExtractor": "#/$defs/LLMInfoExtractorConfig",
+          "MockInfoExtractor": "#/$defs/MockInfoExtractorConfig"
+        },
+        "propertyName": "strategy"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MockInfoExtractorConfig"
+        },
+        {
+          "$ref": "#/$defs/LLMInfoExtractorConfig"
+        },
+        {
+          "$ref": "#/$defs/GoldInfoExtractorConfig"
+        }
+      ]
+    },
+    "LLMInfoExtractorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "LLMInfoExtractor",
+          "default": "LLMInfoExtractor",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "llm_service_name": {
+          "default": "google_llm",
+          "title": "Llm Service Name",
+          "type": "string"
+        }
+      },
+      "title": "LLMInfoExtractorConfig",
+      "type": "object"
+    },
+    "LLMQueryGeneratorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "LLMQueryGenerator",
+          "default": "LLMQueryGenerator",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "llm_service_name": {
+          "default": "google_llm",
+          "title": "Llm Service Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "$ref": "#/$defs/SchemaVersion",
+          "default": "current"
+        },
+        "include_static_few_shot": {
+          "default": true,
+          "title": "Include Static Few Shot",
+          "type": "boolean"
+        },
+        "include_explanation": {
+          "default": true,
+          "title": "Include Explanation",
+          "type": "boolean"
+        },
+        "format_yaml": {
+          "default": false,
+          "title": "Format Yaml",
+          "type": "boolean"
+        }
+      },
+      "title": "LLMQueryGeneratorConfig",
+      "type": "object"
+    },
+    "LLMRAGQueryGeneratorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "LLMRAGQueryGenerator",
+          "default": "LLMRAGQueryGenerator",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "llm_service_name": {
+          "default": "google_llm",
+          "title": "Llm Service Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "$ref": "#/$defs/SchemaVersion",
+          "default": "current"
+        },
+        "include_static_few_shot": {
+          "default": false,
+          "title": "Include Static Few Shot",
+          "type": "boolean"
+        },
+        "include_explanation": {
+          "default": true,
+          "title": "Include Explanation",
+          "type": "boolean"
+        },
+        "format_yaml": {
+          "default": false,
+          "title": "Format Yaml",
+          "type": "boolean"
+        },
+        "embedding_service_name": {
+          "default": "google_embedding_ss",
+          "title": "Embedding Service Name",
+          "type": "string"
+        },
+        "neo4j_service_name": {
+          "default": "local_neo4j",
+          "title": "Neo4J Service Name",
+          "type": "string"
+        },
+        "num_dynamic_few_shot": {
+          "default": 5,
+          "minimum": 0,
+          "title": "Num Dynamic Few Shot",
+          "type": "integer"
+        },
+        "filter_by_query_type": {
+          "default": true,
+          "title": "Filter By Query Type",
+          "type": "boolean"
+        }
+      },
+      "title": "LLMRAGQueryGeneratorConfig",
+      "type": "object"
+    },
+    "MockEntityLinkerConfig": {
+      "properties": {
+        "strategy": {
+          "const": "MockEntityLinker",
+          "default": "MockEntityLinker",
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "MockEntityLinkerConfig",
+      "type": "object"
+    },
+    "MockInfoExtractorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "MockInfoExtractor",
+          "default": "MockInfoExtractor",
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "MockInfoExtractorConfig",
+      "type": "object"
+    },
+    "MockQueryExecutorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "MockQueryExecutor",
+          "default": "MockQueryExecutor",
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "MockQueryExecutorConfig",
+      "type": "object"
+    },
+    "MockQueryGeneratorConfig": {
+      "properties": {
+        "strategy": {
+          "const": "MockQueryGenerator",
+          "default": "MockQueryGenerator",
+          "title": "Strategy",
+          "type": "string"
+        }
+      },
+      "title": "MockQueryGeneratorConfig",
+      "type": "object"
+    },
+    "PipelineConfig": {
+      "properties": {
+        "info_extractor_config": {
+          "$ref": "#/$defs/InfoExtractorConfig"
+        },
+        "entity_linker_config": {
+          "$ref": "#/$defs/EntityLinkerConfig"
+        },
+        "relation_linker_config": {
+          "$ref": "#/$defs/RelationLinkerConfig"
+        },
+        "query_generator_config": {
+          "$ref": "#/$defs/QueryGeneratorConfig"
+        },
+        "query_executor_config": {
+          "$ref": "#/$defs/QueryExecutorConfig"
+        }
+      },
+      "title": "PipelineConfig",
+      "type": "object"
+    },
+    "QueryExecutorConfig": {
+      "discriminator": {
+        "mapping": {
+          "EndpointQueryExecutor": "#/$defs/EndpointQueryExecutorConfig",
+          "MockQueryExecutor": "#/$defs/MockQueryExecutorConfig"
+        },
+        "propertyName": "strategy"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MockQueryExecutorConfig"
+        },
+        {
+          "$ref": "#/$defs/EndpointQueryExecutorConfig"
+        }
+      ]
+    },
+    "QueryGeneratorConfig": {
+      "discriminator": {
+        "mapping": {
+          "LLMQueryGenerator": "#/$defs/LLMQueryGeneratorConfig",
+          "LLMRAGQueryGenerator": "#/$defs/LLMRAGQueryGeneratorConfig",
+          "MockQueryGenerator": "#/$defs/MockQueryGeneratorConfig"
+        },
+        "propertyName": "strategy"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MockQueryGeneratorConfig"
+        },
+        {
+          "$ref": "#/$defs/LLMQueryGeneratorConfig"
+        },
+        {
+          "$ref": "#/$defs/LLMRAGQueryGeneratorConfig"
+        }
+      ]
+    },
+    "RAGRelationLinkerConfig": {
+      "properties": {
+        "strategy": {
+          "const": "RagRelationLinker",
+          "default": "RagRelationLinker",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "neo4j_service_name": {
+          "default": "local_neo4j",
+          "title": "Neo4J Service Name",
+          "type": "string"
+        },
+        "embedding_service_name": {
+          "default": "google_embedding_rq",
+          "title": "Embedding Service Name",
+          "type": "string"
+        },
+        "num_properties": {
+          "default": 10,
+          "title": "Num Properties",
+          "type": "integer"
+        },
+        "schema_version": {
+          "$ref": "#/$defs/SchemaVersion",
+          "default": "current"
+        },
+        "include_domain_range": {
+          "default": true,
+          "title": "Include Domain Range",
+          "type": "boolean"
+        }
+      },
+      "title": "RAGRelationLinkerConfig",
+      "type": "object"
+    },
+    "RelationLinkerConfig": {
+      "discriminator": {
+        "mapping": {
+          "FullSchemaRelationLinker": "#/$defs/FullSchemaRelationLinkerConfig",
+          "RagRelationLinker": "#/$defs/RAGRelationLinkerConfig"
+        },
+        "propertyName": "strategy"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/FullSchemaRelationLinkerConfig"
+        },
+        {
+          "$ref": "#/$defs/RAGRelationLinkerConfig"
+        }
+      ]
+    },
+    "SchemaVersion": {
+      "enum": [
+        "dblp_quad",
+        "current"
+      ],
+      "type": "string"
+    }
+  },
+  "properties": {
+    "exp_description": {
+      "default": "---",
+      "title": "Exp Description",
+      "type": "string"
+    },
+    "split": {
+      "default": "test",
+      "enum": [
+        "train",
+        "valid",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "pipeline_config": {
+      "$ref": "#/$defs/PipelineConfig"
+    }
+  },
+  "title": "ExpConfig",
+  "type": "object"
+}

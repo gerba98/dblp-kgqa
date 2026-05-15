@@ -1,0 +1,83 @@
+{
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.yml"
+  ],
+  "service": "app",
+  "workspaceFolder": "/app",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    }
+  },
+  "containerEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.vscode-python-envs",
+        "charliermarsh.ruff",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-renderers",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml",
+        "docker.docker",
+        "yzhang.markdown-all-in-one",
+        "IronGeek.vscode-env",
+        "mechatroner.rainbow-csv",
+        "oderwat.indent-rainbow",
+        "neo4j-extensions.neo4j-for-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // Format & lint on save (Python + notebook)
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "modificationsIfAvailable",
+        "notebook.formatOnSave.enabled": true,
+        "notebook.codeActionsOnSave": {
+          "source.fixAll": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "notebook.showFoldingControls": "always",
+        // Ruff
+        "ruff.configurationPreference": "filesystemFirst",
+        // Per-language formatters
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.rulers": [79],
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          }
+        },
+        "[toml]": {
+          "editor.defaultFormatter": "tamasfe.even-better-toml"
+        },
+        // Python env / terminal
+        "python.terminal.shellIntegration.enabled": true,
+        "python.useEnvironmentsExtension": true,
+        "python.terminal.useEnvFile": true,
+        "python-envs.terminal.autoActivationType": "shellStartup",
+        // Pylance: type checking, imports, inlay hints
+        "python.analysis.autoSearchPaths": false,
+        "python.analysis.diagnosticMode": "workspace",
+        "python.analysis.typeCheckingMode": "standard",
+        "python.analysis.autoImportCompletions": true,
+        "python.analysis.showOnlyDirectDependenciesInAutoImport": true,
+        "python.analysis.includeAliasesFromUserFiles": false,
+        "python.analysis.enableTroubleshootMissingImports": true,
+        "python.analysis.autoFormatStrings": true,
+        "python.analysis.supportDocstringTemplate": false,
+        "python.analysis.referencesCodeLens": true,
+        "python.analysis.inlayHints.callArgumentNames": "partial",
+        "python.analysis.inlayHints.functionReturnTypes": true,
+        "python.analysis.inlayHints.variableTypes": true,
+        "python.analysis.typeEvaluation.deprecateTypingAliases": true,
+        "python.analysis.typeEvaluation.enableReachabilityAnalysis": true
+      }
+    }
+  }
+}

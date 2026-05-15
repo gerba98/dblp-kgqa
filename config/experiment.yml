@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=experiment.schema.json
+exp_description: '---'
+split: test
+pipeline_config:
+  info_extractor_config:
+    strategy: GoldInfoExtractor
+    dblp_quad_service_name: dblp_quad
+    dblp_quad_split_type: test
+  entity_linker_config:
+    strategy: GoldEntityLinker
+    dblp_quad_service_name: dblp_quad
+    dblp_quad_split_type: test
+  relation_linker_config:
+    strategy: RagRelationLinker
+    neo4j_service_name: local_neo4j
+    embedding_service_name: google_embedding_rq
+    num_properties: 20
+    schema_version: dblp_quad
+    include_domain_range: true
+  query_generator_config:
+    strategy: LLMRAGQueryGenerator
+    llm_service_name: google_llm
+    schema_version: dblp_quad
+    include_static_few_shot: false
+    include_explanation: true
+    format_yaml: false
+    embedding_service_name: google_embedding_ss
+    neo4j_service_name: local_neo4j
+    num_dynamic_few_shot: 15
+    filter_by_query_type: true
+  query_executor_config:
+    strategy: EndpointQueryExecutor
+    endpoint: http://virtuoso:8890/sparql
+    timeout: 20
+    local_docker: false
+    docker_container_name: dblp-dump-virtuoso-1
+    docker_ready_timeout: 60

@@ -1,0 +1,14 @@
+.env
+
+# python
+.venv/
+__pycache__/
+.runpod
+.ruff_cache
+
+# large data
+data/*
+!data/.gitkeep
+experiment_output/
+servers/llama/models
+servers/virtuoso/dump/
