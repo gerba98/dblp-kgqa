@@ -1,0 +1,24 @@
+exp_description: Gemini | IV = SP + SFS + CoT
+split: test
+pipeline_config:
+  info_extractor_config:
+    strategy: GoldInfoExtractor
+    dblp_quad_service_name: dblp_quad
+    dblp_quad_split_type: test
+  entity_linker_config:
+    strategy: GoldEntityLinker
+    dblp_quad_service_name: dblp_quad
+    dblp_quad_split_type: test
+  relation_linker_config:
+    strategy: FullSchemaRelationLinker
+  query_generator_config:
+    strategy: LLMQueryGenerator
+    llm_service_name: google_llm
+    schema_version: dblp_quad
+    include_static_few_shot: true
+    include_explanation: true
+    format_yaml: false
+  query_executor_config:
+    strategy: EndpointQueryExecutor
+    endpoint: http://virtuoso:8890/sparql
+    timeout: 20

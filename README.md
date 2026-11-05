@@ -13,6 +13,9 @@ I built an end-to-end Knowledge Graph Question Answering (KGQA) system over the 
 > [!NOTE]
 > **For the architecture, methodology, and experimental results in detail, see my thesis** [**HERE**](doc/masters-thesis.pdf).
 
+> [!NOTE]
+> **Journal paper.** The configuration files, metrics, statistical-analysis scripts and results of the experiments reported in the paper *Ontology-Aware Context Selection for LLM-Based SPARQL Generation under Gold Grounding* are in [`reproducibility/`](reproducibility/README.md); the per-question outputs are archived on Zenodo ([DOI: 10.5281/zenodo.XXXXXXX]).
+
 ## Requirements
 
 - Docker
