@@ -1,0 +1,44 @@
+google_llm:
+  type: LLM
+  temperature: 0.0
+  max_retries: 3
+  max_tokens: 2048
+  backend:
+    strategy: Google
+    model_name: gemini-3.1-flash-lite-preview
+    thinking_level: minimal
+    use_vertexai: true
+local_llm:
+  type: LLM
+  temperature: 0.0
+  max_retries: 3
+  max_tokens: 2048
+  backend:
+    strategy: LlamaCpp
+    model_name: Qwen2.5-Coder-32B-Instruct-Q8_0
+    base_url: https://<runpod-pod-id>-8080.proxy.runpod.net
+    ctx_size: 16384
+    n_gpu_layers: 99
+    top_p: null
+    top_k: null
+    min_p: null
+    presence_penalty: null
+    enable_thinking: null
+    hf_repo: unsloth/Qwen2.5-Coder-32B-Instruct-GGUF
+    runpod_gpu: NVIDIA RTX PRO 6000 Blackwell Server Edition
+    runpod_disk_gb: 50
+local_neo4j:
+  type: Neo4j
+  uri: bolt://neo4j:7687
+dblp_quad:
+  type: DblpQuad
+google_embedding_ss:
+  type: Embedding
+  model_name: gemini-embedding-001
+  task_type: SEMANTIC_SIMILARITY
+  use_vertexai: true
+google_embedding_rq:
+  type: Embedding
+  model_name: gemini-embedding-001
+  task_type: RETRIEVAL_QUERY
+  use_vertexai: true

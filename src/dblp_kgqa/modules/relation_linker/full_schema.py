@@ -1,5 +1,10 @@
 # ruff: noqa: E501
 
+# Properties of the dblp RDF schema, version 2024-06-14
+# (https://dblp.org/rdf/schema-2024-06-14, CC0 1.0), as listed in
+# dblp_schema.py of ASK-DBLP (https://github.com/semantic-systems/ask-dblp),
+# Copyright (c) 2025 AIX research group, MIT License.
+
 # deleted_from = {
 #     "authorOf": {
 #         "IRI": "https://dblp.org/rdf/schema#authorOf",

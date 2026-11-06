@@ -13,6 +13,9 @@ I built an end-to-end Knowledge Graph Question Answering (KGQA) system over the 
 > [!NOTE]
 > **For the architecture, methodology, and experimental results in detail, see my thesis** [**HERE**](doc/masters-thesis.pdf).
 
+> [!NOTE]
+> **Journal paper.** The configuration files, metrics, statistical-analysis scripts and results of the experiments reported in the paper *Ontology-Aware Context Selection for LLM-Based SPARQL Generation under Gold Grounding: Template Generalization on DBLP-QuAD* are in [`reproducibility/`](reproducibility/README.md); the per-question outputs are archived on Zenodo ([DOI: 10.5281/zenodo.23991429](https://doi.org/10.5281/zenodo.23991429)).
+
 ## Requirements
 
 - Docker
@@ -53,7 +56,7 @@ docker compose up -d --build
 
 ### 3. Download the data
 
-Fetches the `data/` folder containing the DBLP-QuAD dataset, the embeddings, and the DBLP ontology schema (~1 GB, one-time).
+Downloads from [Zenodo](https://doi.org/10.5281/zenodo.23991429) the `data/` folder containing the DBLP-QuAD dataset, the embeddings, and the DBLP ontology schema (~220 MB download, ~1 GB extracted, one-time).
 
 ```bash
 make init-data
@@ -149,7 +152,7 @@ Once it is running, open [http://localhost:8501](http://localhost:8501) in your 
 
 Use this mode if you want to modify the project code or reproduce my experiments.
 
-> **Note**: You can view the results, metrics, and logs of the experiments reported in my thesis in this [Google Drive folder](https://drive.google.com/drive/folders/12D05F9LTrDHFe9VK07th8MJ1q7guq4df?usp=drive_link).
+> **Note**: The configurations, metrics and per-question results of the experiments reported in my thesis are described in [`reproducibility/`](reproducibility/README.md).
 
 ### 1. Initial Setup
 Create your environment file as in **Step 1 of the Demo section** (`cp .env.example .env`). On Linux, also apply the UID/GID fix from that step before starting the container. This is the only setting that must be in place at boot time. All other variables can be set later, and each `make` command picks up the latest values.
@@ -186,7 +189,7 @@ The first command starts a Virtuoso container at `http://virtuoso:8890/sparql`. 
 ### 6. Configure the experiment
 Open `config/experiment.yml` to set up the pipeline configuration you want to evaluate. 
 
-If you want to reproduce the exact results reported in my thesis, you can find the complete configuration files (`experiment.yml` and `services.yml`) used for each run inside the Google Drive folder linked above. You can simply copy them over to your `config/` directory.
+If you want to reproduce the exact results reported in my thesis, the complete configuration files used for each run are in `reproducibility/runs/<run>/`: copy `exp_config.yml` to `config/experiment.yml` and `services.yml` to `config/services.yml`. For the runs with a local model, replace `<runpod-pod-id>` in `services.yml` with the address of your own LLM server (see Step 4).
 
 ### 7. Run the experiment
 
@@ -204,3 +207,7 @@ My project builds upon resources, data, and ideas from the following open-source
 - **[Scholarly QALD Challenge](https://github.com/debayan/scholarly-QALD-challenge)**
 - **[ASK-DBLP](https://github.com/semantic-systems/ask-dblp)**
 - **[NLQxform](https://github.com/ruijie-wang-uzh/NLQxform)**
+
+## License
+
+The code is released under the [MIT License](LICENSE); the thesis in `doc/` is not covered by it. The data and per-question outputs on [Zenodo](https://doi.org/10.5281/zenodo.23991429) are released under CC BY 4.0.
