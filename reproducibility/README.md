@@ -2,9 +2,9 @@
 
 This directory contains the configuration files, aggregate metrics, statistical-analysis scripts and results of the experiments reported in:
 
-> N. Capuano, L. Gerbasi, S. Senatore. *Ontology-Aware Context Selection for LLM-Based SPARQL Generation under Gold Grounding: A Component-Wise Study of Template Generalization on DBLP-QuAD*. Submitted to the Journal of Web Semantics.
+> N. Capuano, L. Gerbasi, S. Senatore. *Ontology-Aware Context Selection for LLM-Based SPARQL Generation under Gold Grounding: Template Generalization on DBLP-QuAD*. Submitted to the Journal of Web Semantics.
 
-The per-question outputs of all runs (`exp_results.json`, `experiment.log`), the per-question score files, the chain-of-thought traces of the training examples and the precomputed embeddings are too large for git and are archived on Zenodo: **[DOI: 10.5281/zenodo.XXXXXXX]**.
+The per-question outputs of all runs (`exp_results.json`, `experiment.log`), the per-question score files, the chain-of-thought traces of the training examples and the precomputed embeddings are too large for git and are archived on Zenodo: **[DOI: 10.5281/zenodo.23991429](https://doi.org/10.5281/zenodo.23991429)**.
 
 Prompts and code are in `src/dblp_kgqa/` (prompts in `modules/query_generator/llm_prompt.py`; full-schema predicate list in `modules/relation_linker/full_schema.py`).
 
